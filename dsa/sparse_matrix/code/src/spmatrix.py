@@ -7,27 +7,27 @@ class SparseMatrix:
         """
         matrix = {}
         try:
-            # Open the file and read row and column counts
+            # Open the specified file to read matrix dimensions
             with open(file_path, 'r') as file:
-                rows = int(file.readline().split('=')[1])  # Extract the number of rows
-                cols = int(file.readline().split('=')[1])  # Extract the number of columns
+                rows = int(file.readline().split('=')[1])  # Get the total number of rows
+                cols = int(file.readline().split('=')[1])  # Get the total number of columns
 
                 self.numRows = rows
                 self.numCols = cols
 
-                # Read each non-zero matrix entry in the format (row, column, value)
+                # Process each line to read non-zero entries in the format (row, column, value)
                 for line in file:
                     if line.strip():  # Ignore empty lines or whitespace
                         row, col, value = self.parse_entry(line)  # Parse the entry
                         if row not in matrix:
-                            matrix[row] = {}  # Initialize a new row if not already present
+                            matrix[row] = {}  # Create a new row in the matrix if it does not exist
                         matrix[row][col] = value  # Store the value at the specified position
 
         except Exception as e:
             # Raise a Python standard exception for format issues
             raise ValueError(f"Input file has wrong format: {e}")
         
-        return matrix  # Return the constructed matrix
+        return matrix  # Return the matrix that has been constructed
 
     def __init__(self, matrix_file=None, numRows=None, numCols=None):
         """
@@ -36,7 +36,7 @@ class SparseMatrix:
         - If `numRows` and `numCols` are provided, create an empty matrix with those dimensions.
         """
         if matrix_file:
-            self.matrix = self.load_matrix(matrix_file)  # Load the matrix from the file
+            self.matrix = self.load_matrix(matrix_file)  # Load the matrix data from the specified file
             self.numRows = self.matrix.get(0, {}).get(0, 0)  # Get the number of rows from the loaded matrix
             self.numCols = self.matrix.get(0, {}).get(1, 0)  # Get the number of columns from the loaded matrix
         else:
@@ -51,16 +51,16 @@ class SparseMatrix:
         Parse a line containing a matrix entry.
         Each line is in the format (row, column, value).
         """
-        # Remove parentheses and split the entry by commas
+        # Remove parentheses and split the line by commas
         entry = line.strip()[1:-1].split(',')
-        return int(entry[0]), int(entry[1]), int(entry[2])  # Return the parsed row, column, and value
+        return int(entry[0]), int(entry[1]), int(entry[2])  # Return the parsed row, column, and value as integers
 
     def get_element(self, row, col):
         """
         Get the value of an element at a specific row and column.
         If the element is not explicitly stored (i.e., it's zero), return 0.
         """
-        return self.matrix.get(row, {}).get(col, 0)  # Return the element if it exists, else return 0
+        return self.matrix.get(row, {}).get(col, 0)  # Return the stored value or 0 if not found 
 
     def set_element(self, row, col, value):
         """
@@ -68,8 +68,8 @@ class SparseMatrix:
         If the row or column doesn't exist, it will be initialized.
         """
         if row not in self.matrix:
-            self.matrix[row] = {}  # Initialize a new row if not present
-        self.matrix[row][col] = value  # Set the value at the specified position
+            self.matrix[row] = {}  # Create a new dictionary for the row if it doesn't exist
+        self.matrix[row][col] = value  # Assign the value at the given row and column
 
     def add(self, other_matrix):
         """
@@ -78,13 +78,13 @@ class SparseMatrix:
         """
         result = SparseMatrix(numRows=self.numRows, numCols=self.numCols)  # Create a result matrix
 
-        # Iterate through every position in the matrix
+        # Loop through each element in the matrix
         for row in range(self.numRows):
             for col in range(self.numCols):
-                # Add corresponding elements from both matrices
+                # Sum the elements from both matrices at the current position
                 result.set_element(row, col, self.get_element(row, col) + other_matrix.get_element(row, col))
         
-        return result  # Return the result of the addition
+        return result  # Return the matrix with the sum of elements
 
     def subtract(self, other_matrix):
         """
@@ -145,26 +145,26 @@ if __name__ == "__main__":
     matrix1 = SparseMatrix(matrix_file='./easy_sample_02_3.txt')
     matrix2 = SparseMatrix(matrix_file='./easy_sample_03_2.txt')
 
-    # Menu for selecting the matrix operation
-    print("Choose a matrix operation:")
-    print("1. Add Matrices")
-    print("2. Subtract Matrices")
-    print("3. Multiply Matrices")
+    # Display options for matrix operations
+    print("Select a matrix operation:")
+    print("1. Matrix Addition")
+    print("2. Matrix Subtraction")
+    print("3. Matrix Multiplication")
     choice = int(input("Enter your choice (1/2/3): "))
 
-    # Perform the selected operation
+    # Execute the chosen operation
     if choice == 1:
         result = matrix1.add(matrix2)
-        print("Matrices added successfully!")
+        print("The matrices have been successfully added!")
     elif choice == 2:
         result = matrix1.subtract(matrix2)
-        print("Matrices subtracted successfully!")
+        print("The matrices have been successfully subtracted!")
     elif choice == 3:
         result = matrix1.multiply(matrix2)
-        print("Matrices multiplied successfully!")
+        print("The matrices have been successfully multiplied!")
     else:
-        print("Invalid choice. Please enter 1, 2, or 3.")
+        print("Invalid input. Please select 1, 2, or 3.")
 
     # Ask the user to save the result to a file
-    output_file = input("Enter the output file path to save the result: ")
+    output_file = input("Please provide the file path where you'd like to save the result: ")
     result.save_to_file(output_file)
