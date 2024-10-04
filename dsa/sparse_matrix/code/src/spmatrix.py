@@ -37,6 +37,8 @@ class SparseMatrix:
         """
         if matrix_file:
             self.matrix = self.load_matrix(matrix_file)  # Load the matrix from the file
+            self.numRows = self.matrix.get(0, {}).get(0, 0)  # Get the number of rows from the loaded matrix
+            self.numCols = self.matrix.get(0, {}).get(1, 0)  # Get the number of columns from the loaded matrix
         else:
             self.matrix = {}  # Initialize an empty matrix
             self.numRows = numRows
@@ -139,31 +141,30 @@ class SparseMatrix:
 
 # Main execution block for user interaction
 if __name__ == "__main__":
-    # Load two matrices from files
-    matrix1 = SparseMatrix(matrix_file='./easy_sample_01_3.txt')
-    matrix2 = SparseMatrix(matrix_file='./easy_sample_03_1.txt')
+    # Initialize matrices from these file sources
+    matrix1 = SparseMatrix(matrix_file='./easy_sample_02_3.txt')
+    matrix2 = SparseMatrix(matrix_file='./easy_sample_03_2.txt')
 
     # Menu for selecting the matrix operation
     print("Choose a matrix operation:")
-    print("1. Add Matrices")
-    print("2. Subtract Matrices")
-    print("3. Multiply Matrices")
-    choice = int(input("Enter your choice (1/2/3): "))
+    print("A. Add Matrices")
+    print("B. Subtract Matrices")
+    print("C. Multiply Matrices")
+    choice = int(input("Enter your choice (A/B/C): "))
 
     # Perform the selected operation
-    if choice == 1:
+    if choice == A:
         result = matrix1.add(matrix2)
         print("Matrices added successfully!")
-    elif choice == 2:
+    elif choice == B:
         result = matrix1.subtract(matrix2)
         print("Matrices subtracted successfully!")
-    elif choice == 3:
+    elif choice == C:
         result = matrix1.multiply(matrix2)
         print("Matrices multiplied successfully!")
     else:
-        print("Invalid choice. Please enter 1, 2, or 3.")
+        print("Invalid choice. Please enter A, B, or C.")
 
     # Ask the user to save the result to a file
     output_file = input("Enter the output file path to save the result: ")
     result.save_to_file(output_file)
-    print(f"Result saved to {output_file}.")
