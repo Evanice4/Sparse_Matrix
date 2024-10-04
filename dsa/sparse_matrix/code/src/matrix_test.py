@@ -13,4 +13,4 @@ class Matrix:
         self.head = None
     #todo def getValue(self, currentRow, currentCol):
     #todo setMatrix(self, row, col, value)
-    todo def multiply(self, Matrix)
+    #todo def multiply(self, Matrix)
