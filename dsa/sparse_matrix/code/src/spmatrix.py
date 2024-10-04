@@ -147,23 +147,23 @@ if __name__ == "__main__":
 
     # Menu for selecting the matrix operation
     print("Choose a matrix operation:")
-    print("A. Add Matrices")
-    print("B. Subtract Matrices")
-    print("C. Multiply Matrices")
-    choice = int(input("Enter your choice (A/B/C): "))
+    print("1. Add Matrices")
+    print("2. Subtract Matrices")
+    print("3. Multiply Matrices")
+    choice = int(input("Enter your choice (1/2/3): "))
 
     # Perform the selected operation
-    if choice == A:
+    if choice == 1:
         result = matrix1.add(matrix2)
         print("Matrices added successfully!")
-    elif choice == B:
+    elif choice == 2:
         result = matrix1.subtract(matrix2)
         print("Matrices subtracted successfully!")
-    elif choice == C:
+    elif choice == 3:
         result = matrix1.multiply(matrix2)
         print("Matrices multiplied successfully!")
     else:
-        print("Invalid choice. Please enter A, B, or C.")
+        print("Invalid choice. Please enter 1, 2, or 3.")
 
     # Ask the user to save the result to a file
     output_file = input("Enter the output file path to save the result: ")
